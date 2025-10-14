@@ -58,19 +58,34 @@ def handler(ctx, data: io.BytesIO = None):
             if not page_token:
                 break
         
+        # contentフィールドからJSONを展開してレスポンス用データを作成
+        response_tasks = []
+        for task_row in tasks:
+            try:
+                task_content = json.loads(task_row.get('content', '{}'))
+                response_task = {
+                    "id": task_row.get('id'),
+                    **task_content
+                }
+                response_tasks.append(response_task)
+            except json.JSONDecodeError as ex:
+                logger.warning(f"Failed to parse content for task {task_row.get('id')}: {str(ex)}")
+                # パースに失敗した場合はスキップ
+                continue
+        
         # タスクリストを作成日時でソート（新しい順）
         try:
-            tasks.sort(key=lambda x: x.get('created_at', ''), reverse=True)
+            response_tasks.sort(key=lambda x: x.get('created_at', ''), reverse=True)
         except Exception as sort_ex:
             logger.warning(f"Failed to sort tasks by created_at: {str(sort_ex)}")
             # ソートに失敗してもエラーにはしない
         
-        logger.info(f"Retrieved {len(tasks)} tasks successfully")
+        logger.info(f"Retrieved {len(response_tasks)} tasks successfully")
         
         # レスポンス
         return response.Response(
             ctx,
-            response_data=json.dumps(tasks),
+            response_data=json.dumps(response_tasks),
             headers={"Content-Type": "application/json"},
             status_code=200
         )

@@ -38,7 +38,8 @@ backend/
 
 ### 1. タスク追加 (add-task)
 
-- **エンドポイント**: `POST /add`
+- **エンドポイント**: `POST /tasks`
+- **HTTP メソッド**: `POST`
 - **リクエストボディ**:
   ```json
   {
@@ -59,7 +60,8 @@ backend/
 
 ### 2. タスク削除 (delete-task)
 
-- **エンドポイント**: `POST /delete?id=<task_id>`
+- **エンドポイント**: `DELETE /tasks?id=<task_id>`
+- **HTTP メソッド**: `DELETE`
 - **レスポンス**:
   ```json
   {
@@ -69,7 +71,8 @@ backend/
 
 ### 3. タスク編集 (edit-task)
 
-- **エンドポイント**: `POST /edit?id=<task_id>`
+- **エンドポイント**: `PATCH /tasks?id=<task_id>`
+- **HTTP メソッド**: `PATCH`
 - **リクエストボディ**:
   ```json
   {
@@ -82,7 +85,8 @@ backend/
 
 ### 4. タスクリスト取得 (list-tasks)
 
-- **エンドポイント**: `GET /list`
+- **エンドポイント**: `GET /tasks`
+- **HTTP メソッド**: `GET`
 - **レスポンス**:
   ```json
   [
@@ -101,9 +105,31 @@ backend/
 
 NoSQL Database の各レコードは以下の構造を持ちます：
 
+### データベース構造
+
 ```json
 {
-  "task_id": "uuid-string", // プライマリキー
+  "id": "uuid-string", // プライマリキー (STRING)
+  "content": "{...}" // タスクデータ (JSON文字列)
+}
+```
+
+### content フィールド内の JSON 構造
+
+```json
+{
+  "title": "タスクのタイトル",
+  "description": "タスクの説明",
+  "created_at": "2025-10-14T12:00:00Z",
+  "completed": false
+}
+```
+
+### API レスポンス形式
+
+```json
+{
+  "id": "uuid-string",
   "title": "タスクのタイトル",
   "description": "タスクの説明",
   "created_at": "2025-10-14T12:00:00Z",
@@ -116,7 +142,8 @@ NoSQL Database の各レコードは以下の構造を持ちます：
 ### 1. OCI NoSQL Database Service
 
 - NoSQL Database テーブルが作成されている
-- テーブルのプライマリキーが `task_id` (STRING) として設定されている
+- テーブルのプライマリキーが `id` (STRING) として設定されている
+- テーブルに `content` (JSON) カラムが設定されている
 
 ### 2. 環境変数
 
