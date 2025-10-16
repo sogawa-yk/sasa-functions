@@ -1,0 +1,33 @@
+{
+  "name": "Vue.js Development Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
+
+  // frontendディレクトリ全体を/workspace配下にバインドマウント
+  "workspaceFolder": "/workspace",
+
+  // ポート転送設定（Viteのデフォルトポート）
+  "forwardPorts": [5173, 3000, 8080],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite Dev Server",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "Node.js App",
+      "onAutoForward": "notify"
+    }
+  },
+
+  // VS Code拡張機能
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Vue.volar",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-typescript-next"
+      ]
+    }
+  }
+}
