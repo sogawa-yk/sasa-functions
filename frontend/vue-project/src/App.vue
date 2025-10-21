@@ -34,7 +34,9 @@ const addTask = async (taskData) => {
 
 // タスク更新
 const updateTask = async (eventData) => {
+  console.log("updateTask called with eventData:", eventData);
   const { taskId, updates } = eventData;
+  console.log("Extracted taskId:", taskId, "updates:", updates);
   try {
     const updatedTask = await taskAPI.updateTask(taskId, updates);
     const index = tasks.value.findIndex((task) => task.task_id === taskId);
@@ -48,6 +50,7 @@ const updateTask = async (eventData) => {
 
 // タスク削除
 const deleteTask = async (taskId) => {
+  console.log("deleteTask called with taskId:", taskId);
   try {
     await taskAPI.deleteTask(taskId);
     tasks.value = tasks.value.filter((task) => task.task_id !== taskId);

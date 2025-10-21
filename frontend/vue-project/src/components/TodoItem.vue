@@ -8,6 +8,9 @@ const props = defineProps({
   }
 })
 
+// タスクデータをデバッグ出力
+console.log("TodoItem received task:", props.task);
+
 const emit = defineEmits(['update-task', 'delete-task'])
 
 const isEditing = ref(false)
@@ -36,14 +39,16 @@ const saveEdit = async () => {
   isUpdating.value = true
   
   try {
-    await emit('update-task', {
+    const eventData = {
       taskId: props.task.task_id,
       updates: {
         title: editTitle.value.trim(),
         description: editDescription.value.trim(),
         completed: props.task.completed
       }
-    })
+    };
+    console.log("TodoItem saveEdit emitting:", eventData);
+    await emit('update-task', eventData)
     isEditing.value = false
   } finally {
     isUpdating.value = false
@@ -55,14 +60,16 @@ const toggleComplete = async () => {
   isUpdating.value = true
   
   try {
-    await emit('update-task', {
+    const eventData = {
       taskId: props.task.task_id,
       updates: {
         title: props.task.title,
         description: props.task.description,
         completed: !props.task.completed
       }
-    })
+    };
+    console.log("TodoItem toggleComplete emitting:", eventData);
+    await emit('update-task', eventData)
   } finally {
     isUpdating.value = false
   }
@@ -71,6 +78,7 @@ const toggleComplete = async () => {
 // タスクを削除
 const deleteTask = () => {
   if (confirm('このタスクを削除しますか？')) {
+    console.log("TodoItem deleteTask emitting taskId:", props.task.task_id);
     emit('delete-task', props.task.task_id)
   }
 }
