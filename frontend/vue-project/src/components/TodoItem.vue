@@ -39,16 +39,8 @@ const saveEdit = async () => {
   isUpdating.value = true
   
   try {
-    // タスクIDの確認（複数の可能性をチェック）
-    const taskId = props.task.task_id || props.task.id || props.task.taskId;
-    console.log("Available task properties:", Object.keys(props.task));
-    console.log("task_id:", props.task.task_id);
-    console.log("id:", props.task.id);
-    console.log("taskId:", props.task.taskId);
-    console.log("Selected taskId:", taskId);
-    
     const eventData = {
-      taskId: taskId,
+      taskId: props.task.id,
       updates: {
         title: editTitle.value.trim(),
         description: editDescription.value.trim(),
@@ -68,11 +60,8 @@ const toggleComplete = async () => {
   isUpdating.value = true
   
   try {
-    // タスクIDの確認（複数の可能性をチェック）
-    const taskId = props.task.task_id || props.task.id || props.task.taskId;
-    
     const eventData = {
-      taskId: taskId,
+      taskId: props.task.id,
       updates: {
         title: props.task.title,
         description: props.task.description,
@@ -89,10 +78,8 @@ const toggleComplete = async () => {
 // タスクを削除
 const deleteTask = () => {
   if (confirm('このタスクを削除しますか？')) {
-    // タスクIDの確認（複数の可能性をチェック）
-    const taskId = props.task.task_id || props.task.id || props.task.taskId;
-    console.log("TodoItem deleteTask emitting taskId:", taskId);
-    emit('delete-task', taskId)
+    console.log("TodoItem deleteTask emitting taskId:", props.task.id);
+    emit('delete-task', props.task.id)
   }
 }
 

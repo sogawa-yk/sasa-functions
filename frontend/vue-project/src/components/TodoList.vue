@@ -38,7 +38,7 @@ defineEmits(['update-task', 'delete-task'])
     <div v-else class="tasks-container">
       <TodoItem
         v-for="task in tasks"
-        :key="task.task_id"
+        :key="task.id"
         :task="task"
         @update-task="$emit('update-task', $event)"
         @delete-task="$emit('delete-task', $event)"

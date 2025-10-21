@@ -39,7 +39,7 @@ const updateTask = async (eventData) => {
   console.log("Extracted taskId:", taskId, "updates:", updates);
   try {
     const updatedTask = await taskAPI.updateTask(taskId, updates);
-    const index = tasks.value.findIndex((task) => task.task_id === taskId);
+    const index = tasks.value.findIndex((task) => task.id === taskId);
     if (index !== -1) {
       tasks.value[index] = updatedTask;
     }
@@ -53,7 +53,7 @@ const deleteTask = async (taskId) => {
   console.log("deleteTask called with taskId:", taskId);
   try {
     await taskAPI.deleteTask(taskId);
-    tasks.value = tasks.value.filter((task) => task.task_id !== taskId);
+    tasks.value = tasks.value.filter((task) => task.id !== taskId);
   } catch (err) {
     error.value = err.message || "タスクの削除に失敗しました";
   }
